@@ -6,13 +6,12 @@ public class LuxuryEditionBook extends Book {
 
     public LuxuryEditionBook(BookStatus bookStatus,
                              String title,
-                             String author,
                              String isbnNumber,
+                             String author,
                              String coverLocation,
                              Boolean favourite,
                              Integer pageNumber,
                              String location,
-
                              String specialFeature) {
         setBookStatus(bookStatus);
         setTitle(title);
@@ -20,7 +19,7 @@ public class LuxuryEditionBook extends Book {
         setIsbnNumber(isbnNumber);
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
-        if (getBookStatus() == BookStatus.NOT_STARTED_READING) {
+        if (getBookStatus() == BookStatus.UNREAD) {
             setPageNumber(null);
         } else {setPageNumber(pageNumber);}
         setLocation(location);

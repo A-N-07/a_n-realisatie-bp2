@@ -10,8 +10,9 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
+        SceneGenerator sceneGenerator = new SceneGenerator(stage);
+
+        stage.setTitle("BDSM");
         stage.show();
     }
 

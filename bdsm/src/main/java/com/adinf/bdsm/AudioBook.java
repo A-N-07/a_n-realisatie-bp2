@@ -7,8 +7,8 @@ public class AudioBook extends Book{
 
     public AudioBook(BookStatus bookStatus,
                      String title,
-                     String author,
                      String isbnNumber,
+                     String author,
                      String coverLocation,
                      Boolean favourite,
                      Integer pageNumber,
@@ -21,7 +21,7 @@ public class AudioBook extends Book{
         setIsbnNumber(isbnNumber);
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
-        if (getBookStatus() == BookStatus.NOT_STARTED_READING) {
+        if (getBookStatus() == BookStatus.UNREAD) {
             setPageNumber(null);
         } else {setPageNumber(pageNumber);}
         setLocation(location);

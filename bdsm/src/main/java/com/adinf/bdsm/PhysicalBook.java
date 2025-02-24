@@ -2,23 +2,21 @@ package com.adinf.bdsm;
 
 public class PhysicalBook extends Book {
 
-    private enum CoverType{
+    public enum CoverType{
         HARDCOVER, SOFTCOVER;
     }
 
     private final String booktype = "Physical Book";
-    private FileType fileType; // Deze field is optioneel
     private CoverType coverType;
 
     public PhysicalBook(BookStatus bookStatus,
                         String title,
-                        String author,
                         String isbnNumber,
+                        String author,
                         String coverLocation,
                         Boolean favourite,
                         Integer pageNumber,
                         String location,
-                        FileType fileType,
                         CoverType coverType){
         setBookStatus(bookStatus);
         setTitle(title);
@@ -26,11 +24,10 @@ public class PhysicalBook extends Book {
         setIsbnNumber(isbnNumber);
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
-        if (getBookStatus() == BookStatus.NOT_STARTED_READING) {
+        if (getBookStatus() == BookStatus.UNREAD) {
             setPageNumber(null);
         } else {setPageNumber(pageNumber);}
         setLocation(location);
-        this.fileType = fileType;
         this.coverType = coverType;
     }
 
@@ -38,14 +35,6 @@ public class PhysicalBook extends Book {
 
     public String getBooktype() {
         return booktype;
-    }
-
-    public FileType getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(FileType fileType) {
-        this.fileType = fileType;
     }
 
     public CoverType getCoverType() {

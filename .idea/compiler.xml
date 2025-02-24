@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="a_n-realisatie-bp2" />
+        <module name="bdsm" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="a_n-realisatie-bp2" target="23" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -11,8 +11,8 @@ public class Ebook extends Book{
 
     public Ebook(BookStatus bookStatus,
                  String title,
-                 String author,
                  String isbnNumber,
+                 String author,
                  String coverLocation,
                  Boolean favourite,
                  Integer pageNumber,
@@ -20,15 +20,23 @@ public class Ebook extends Book{
                  FileType fileType
                  ) {
         setBookStatus(bookStatus);
+
         setTitle(title);
+
         setAuthor(author);
+
         setIsbnNumber(isbnNumber);
+
         setCoverLocation(coverLocation);
+
         setFavourite(favourite != null ? favourite : false);
-        if (getBookStatus() == BookStatus.NOT_STARTED_READING) {
+
+        if (getBookStatus() == BookStatus.UNREAD) {
             setPageNumber(null);
         } else {setPageNumber(pageNumber);}
+
         setLocation(location);
+
         this.fileType = fileType;
     }
 
