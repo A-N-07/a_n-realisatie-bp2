@@ -1,8 +1,10 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.controller;
+
+import com.adinf.bdsm.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseController {
     Connection con;
@@ -47,6 +49,11 @@ public class DatabaseController {
         // Bijvoorbeeld: Je slaat een boek op met daarin een author. Dan wordt meteen bij het opslaan de author toegevoegd aan de sub-table 'person'.
         // En wanneer alle sub-table waardes die nog niet bestaan toegevoegd zijn aan zijn specifieke sub-table, word pas deze functie aangeroepen om een boek toe te voegen.
         // Deze volgorde in de Front End is extreem belangrijk anders werkt deze functie niet. En dus de applicatie niet.
+
+        location = folderPathCorrecter(location);
+        if (coverLocation !=null) {
+            coverLocation = folderPathCorrecter(coverLocation);
+        }
 
         String sql = """
             INSERT INTO book (
@@ -127,6 +134,11 @@ public class DatabaseController {
         // updateBook werkt hetzelfde als het aanmaken van een boek het doet alleen niet INSERT, maar UPDATE
         // Het update alle waardes van het boek, maar het zet de Foreign Key kolommen eerst op null en gaat daarna apart uitzoeken welke Foreign Key kolom een Foreign Key moet hebben
 
+        location = folderPathCorrecter(location);
+        if (coverLocation !=null) {
+            coverLocation = folderPathCorrecter(coverLocation);
+        }
+
         String strUpdateQuery = """
                 UPDATE book 
                 SET title = ?, isbn_number = ?, special_feature = ?, page_number = ?, favourite = ?,
@@ -167,13 +179,13 @@ public class DatabaseController {
         }
     }
 
-    public ArrayList<Book> retrieveBooks() {
+    public ObservableList<Book> retrieveBooks() {
 
         //RetrieveBooks haalt boek voor boek de informatie om een boek te maken uit de database,
         // creëert het juiste type boek object en slaat het op in de lijst die hieronder is aangemaakt, en returned de lijst
         // Deze functie is zo gemaakt zodat iedere keer wanneer de applicatie opstart alle boeken als eerste worden ingeladen.
 
-        ArrayList<Book> allBooksList = new ArrayList<>();
+        ObservableList<Book> allBooksList = FXCollections.observableArrayList();
 
         String retrieveBooks = """
             SELECT title, isbn_number, special_feature, page_number, favourite,
@@ -286,6 +298,11 @@ public class DatabaseController {
         }
         return allBooksList;
     }
+
+    public static String folderPathCorrecter(String input) {
+        return input.contains("\\") ? input.replace("\\", "\\\\") : input;
+    }
+
 
     public Connection getCon() {
         return con;

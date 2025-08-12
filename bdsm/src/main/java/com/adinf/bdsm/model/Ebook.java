@@ -1,12 +1,10 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.model;
 
 
-import java.util.Optional;
-
-public class Ebook extends Book{
+public class Ebook extends Book {
 
     //fields
-    private final String bookType = "E-book";
+    //private final String bookType = "E-book";
     private FileType fileType; // Deze field is optioneel
 
     public Ebook(BookStatus bookStatus,
@@ -19,6 +17,8 @@ public class Ebook extends Book{
                  String location,
                  FileType fileType
                  ) {
+        super(BookType.E_BOOK);
+
         setBookStatus(bookStatus);
 
         setTitle(title);
@@ -32,8 +32,8 @@ public class Ebook extends Book{
         setFavourite(favourite != null ? favourite : false);
 
         if (getBookStatus() == BookStatus.UNREAD) {
-            setPageNumber(null);
-        } else {setPageNumber(pageNumber);}
+            setPageNumber(0);
+        } else {setPageNumber(pageNumber != null ? pageNumber : 0);}
 
         setLocation(location);
 
@@ -41,10 +41,6 @@ public class Ebook extends Book{
     }
 
     // Getters en Setters
-
-    public String getBookType() {
-        return bookType;
-    }
 
     public FileType getFileType() {
         return fileType;

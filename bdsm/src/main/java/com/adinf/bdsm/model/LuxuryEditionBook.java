@@ -1,7 +1,7 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.model;
 
 public class LuxuryEditionBook extends Book {
-    private final String booktype = "Luxury Edition Book";
+    //private final String booktype = "Luxury Edition Book";
     private String specialFeature; // Deze field is optioneel
 
     public LuxuryEditionBook(BookStatus bookStatus,
@@ -13,6 +13,7 @@ public class LuxuryEditionBook extends Book {
                              Integer pageNumber,
                              String location,
                              String specialFeature) {
+        super(BookType.LUXURY_EDITION_BOOK);
         setBookStatus(bookStatus);
         setTitle(title);
         setAuthor(author);
@@ -20,18 +21,13 @@ public class LuxuryEditionBook extends Book {
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
         if (getBookStatus() == BookStatus.UNREAD) {
-            setPageNumber(null);
-        } else {setPageNumber(pageNumber);}
+            setPageNumber(0);
+        } else {setPageNumber(pageNumber != null ? pageNumber : 0);}
         setLocation(location);
         this.specialFeature = specialFeature;
     }
 
     // Getters en Setters
-
-    public String getBooktype() {
-        return booktype;
-    }
-
     public String getSpecialFeature() {
         return specialFeature;
     }

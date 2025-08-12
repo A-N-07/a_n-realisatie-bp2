@@ -1,4 +1,4 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.model;
 
 public class PhysicalBook extends Book {
 
@@ -6,7 +6,7 @@ public class PhysicalBook extends Book {
         HARDCOVER, SOFTCOVER;
     }
 
-    private final String booktype = "Physical Book";
+    //private final String booktype = "Physical Book";
     private CoverType coverType;
 
     public PhysicalBook(BookStatus bookStatus,
@@ -18,6 +18,7 @@ public class PhysicalBook extends Book {
                         Integer pageNumber,
                         String location,
                         CoverType coverType){
+        super(BookType.PHYSICAL_BOOK);
         setBookStatus(bookStatus);
         setTitle(title);
         setAuthor(author);
@@ -25,17 +26,13 @@ public class PhysicalBook extends Book {
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
         if (getBookStatus() == BookStatus.UNREAD) {
-            setPageNumber(null);
-        } else {setPageNumber(pageNumber);}
+            setPageNumber(0);
+        } else {setPageNumber(pageNumber != null ? pageNumber : 0);}
         setLocation(location);
         this.coverType = coverType;
     }
 
     // Getters en Setters
-
-    public String getBooktype() {
-        return booktype;
-    }
 
     public CoverType getCoverType() {
         return coverType;

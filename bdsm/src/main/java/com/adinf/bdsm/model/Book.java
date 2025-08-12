@@ -1,8 +1,7 @@
-package com.adinf.bdsm;
-
-import java.util.Optional;
+package com.adinf.bdsm.model;
 
 public class Book {
+    private final BookType bookType;
     private BookStatus bookStatus;
     private String title;
     private String isbnNumber; // Deze field is optioneel
@@ -11,6 +10,10 @@ public class Book {
     private Boolean favourite ; // Deze field heeft als default-waarde 'false'
     private Integer pageNumber; // Deze field is optioneel
     private String location;
+
+    public Book(BookType bookType) {
+        this.bookType = bookType;
+    }
 
     //Enums
     public enum BookStatus {
@@ -22,12 +25,31 @@ public class Book {
     }
 
     public enum BookType{
-        E_BOOK, AUDIO_BOOK, PHYSICAL_BOOK, LUXURY_EDITION_BOOK;
+        E_BOOK("E-Book"),
+        AUDIO_BOOK("Audio Book"),
+        PHYSICAL_BOOK("Physical Book"),
+        LUXURY_EDITION_BOOK("Luxury Edition Book");
+
+        private final String name;
+        BookType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
 
 
     // Getters en Setters
+
+
+    public BookType getBookType() {
+        return bookType;
+    }
+
     public BookStatus getBookStatus() {
         return bookStatus;
     }
@@ -79,7 +101,7 @@ public class Book {
     }
 
     public void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
+        this.pageNumber = pageNumber != null ? pageNumber : 0;
     }
 
     public String getLocation() {

@@ -1,4 +1,4 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.util;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,5 +13,9 @@ public class StageManager {
 
     public void changeScene(Scene scene) {
         this.stage.setScene(scene);
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

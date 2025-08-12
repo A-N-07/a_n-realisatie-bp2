@@ -1,16 +1,15 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.model;
 
-import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
+import com.adinf.bdsm.controller.DatabaseController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class BookListManager {
-    private ArrayList<Book> allBooksList;
+    private ObservableList<Book> allBooksList;
     private DatabaseController databaseController;
 
     public BookListManager() {
-        this.allBooksList = new ArrayList<>();
+        this.allBooksList = FXCollections.observableArrayList();
         this.databaseController = new DatabaseController();
     }
 
@@ -54,15 +53,23 @@ public class BookListManager {
             allBooksList.add(newLuxuryEditionBook);
         }
 
-        getDatabaseController().addBook(bookType, bookStatus, title, isbnNumber, author, coverLocation, favourite, pageNumber, location, fileType, narrator, coverType, specialFeature);
+        //getDatabaseController().addBook(bookType, bookStatus, title, isbnNumber, author, coverLocation, favourite, pageNumber, location, fileType, narrator, coverType, specialFeature);
 
     }
 
-    public List<Book> getAllBooksList() {
+    public String getTitle(int index){
+        return getBook(index).getTitle();
+    }
+
+    public Book getBook(int index) {
+        return allBooksList.get(index);
+    }
+
+    public ObservableList<Book> getAllBooksList() {
         return allBooksList;
     }
 
-    public void setAllBooksList(ArrayList<Book> allBooksList) {
+    public void setAllBooksList(ObservableList<Book> allBooksList) {
         this.allBooksList = allBooksList;
     }
 

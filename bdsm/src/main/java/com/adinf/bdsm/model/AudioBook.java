@@ -1,7 +1,7 @@
-package com.adinf.bdsm;
+package com.adinf.bdsm.model;
 
-public class AudioBook extends Book{
-    private final String booktype = "Audio Book";
+public class AudioBook extends Book {
+    //private final String booktype = "Audio Book";
     private FileType fileType; // Deze field is optioneel
     private String narrator;
 
@@ -15,6 +15,7 @@ public class AudioBook extends Book{
                      String location,
                      FileType fileType,
                      String narrator) {
+        super(BookType.AUDIO_BOOK);
         setBookStatus(bookStatus);
         setTitle(title);
         setAuthor(author);
@@ -22,18 +23,14 @@ public class AudioBook extends Book{
         setCoverLocation(coverLocation);
         setFavourite(favourite != null ? favourite : false);
         if (getBookStatus() == BookStatus.UNREAD) {
-            setPageNumber(null);
-        } else {setPageNumber(pageNumber);}
+            setPageNumber(0);
+        } else {setPageNumber(pageNumber != null ? pageNumber : 0);}
         setLocation(location);
         this.fileType = fileType;
         this.narrator = narrator;
     }
 
     // Getters en Setters
-
-    public String getBooktype() {
-        return booktype;
-    }
 
     public FileType getFileType() {
         return fileType;
