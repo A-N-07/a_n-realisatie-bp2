@@ -43,6 +43,7 @@ public class DatabaseController {
                         String narrator,
                         PhysicalBook.CoverType coverType,
                         String specialFeature) {
+
         //Deze functie voegt een boek toe. Door eerst een boek toe te voegen in de book table zonder foreign keys. (Alle foreign key kolommen zijn dus null)
         // En daarna gaat de functie kijken welke columns met foreign keys geüpdate moet worden. En UPDATE ze.
         // !!NOTE!! Deze functie gaat ervan uit dat de waardes van het boek die in sub-tables moeten al toegevoegd zijn in de Front End.

@@ -13,6 +13,7 @@ public class StageManager {
 
     public void changeScene(Scene scene) {
         this.stage.setScene(scene);
+        this.stage.show();
     }
 
     public Stage getStage() {
