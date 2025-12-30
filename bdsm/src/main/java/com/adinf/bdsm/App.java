@@ -13,6 +13,7 @@ public class App extends Application {
         SceneGenerator sceneGenerator = new SceneGenerator(stage);
 
         stage.setTitle("BDSM");
+        //stage.setScene(sceneGenerator.generateScene("All Books"));
         stage.show();
     }
 

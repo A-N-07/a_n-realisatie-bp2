@@ -304,6 +304,75 @@ public class DatabaseController {
         return input.contains("\\") ? input.replace("\\", "\\\\") : input;
     }
 
+    public void ensureSubTableEntriesExist(Book book) {
+        try {
+            // Author
+            if (book.getAuthor() != null && !existsInTable("person", "name", book.getAuthor())) {
+                insertIntoTable("person", "name", book.getAuthor());
+            }
+
+            // Narrator (alleen bij AudioBook)
+            if (book instanceof AudioBook audioBook && audioBook.getNarrator() != null) {
+                if (!existsInTable("person", "name", audioBook.getNarrator())) {
+                    insertIntoTable("person", "name", audioBook.getNarrator());
+                }
+            }
+
+            // Cover location
+            if (book.getCoverLocation() != null && !existsInTable("cover_location", "value", book.getCoverLocation())) {
+                insertIntoTable("cover_location", "value", book.getCoverLocation());
+            }
+
+            // Book location
+            if (book.getLocation() != null && !existsInTable("book_location", "value", book.getLocation())) {
+                insertIntoTable("book_location", "value", book.getLocation());
+            }
+
+            // File type (Ebook, AudioBook)
+            if (book instanceof Ebook ebook && ebook.getFileType() != null) {
+                if (!existsInTable("file_type", "value", ebook.getFileType().toString())) {
+                    insertIntoTable("file_type", "value", ebook.getFileType().toString());
+                }
+            } else if (book instanceof AudioBook audioBook && audioBook.getFileType() != null) {
+                if (!existsInTable("file_type", "value", audioBook.getFileType().toString())) {
+                    insertIntoTable("file_type", "value", audioBook.getFileType().toString());
+                }
+            }
+
+            // Cover type (PhysicalBook)
+            if (book instanceof PhysicalBook physicalBook && physicalBook.getCoverType() != null) {
+                if (!existsInTable("cover_type", "value", physicalBook.getCoverType().toString())) {
+                    insertIntoTable("cover_type", "value", physicalBook.getCoverType().toString());
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Helper: check of een waarde al in een tabel staat
+    private boolean existsInTable(String table, String column, String value) throws SQLException {
+        String sql = "SELECT 1 FROM " + table + " WHERE " + column + " = ?";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, value);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    // Helper: voeg een waarde toe in een tabel
+    private void insertIntoTable(String table, String column, String value) throws SQLException {
+        String sql = "INSERT INTO " + table + " (" + column + ") VALUES (?)";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, value);
+            stmt.executeUpdate();
+        }
+    }
+
+
 
     public Connection getCon() {
         return con;

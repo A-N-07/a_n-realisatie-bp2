@@ -28,7 +28,7 @@ public class SceneGenerator {
         this.sceneChanger = new SceneChanger(stage);
         this.bookListManager = new BookListManager();
         this.dbController = new DatabaseController();
-        this.newScene = "Create New Book";
+        this.newScene = "All Books";
         //addBook();
         getSceneChanger().changeScene(generateScene(getNewScene()));
 
@@ -65,7 +65,7 @@ public class SceneGenerator {
             button.setMinHeight(50);
             HBox.setHgrow(button, Priority.ALWAYS);
 
-            final int index = i;
+            int index = i;
             button.setOnAction(event -> handleButtonClick(index));
 
             topHbox.getChildren().add(button);
@@ -248,6 +248,7 @@ public class SceneGenerator {
                 };
 
                 // make function for to add narrator and other subtables in the db and check if exists and add here
+                dbController.ensureSubTableEntriesExist(newBook);
 
                 this.bookListManager.getAllBooksList().add(newBook);
 
