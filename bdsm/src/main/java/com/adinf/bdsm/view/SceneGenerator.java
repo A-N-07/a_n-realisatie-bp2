@@ -133,6 +133,8 @@ public class SceneGenerator {
 
         bookList.getColumns().addAll(titleColumn, isbnColumn, bookTypeColumn);
 
+        getBookListManager().setAllBooksList(getDbController().retrieveBooks());
+
         new FilteredList<>(getBookListManager().getAllBooksList(), book -> false);
         FilteredList<Book> filteredBooks = switch (newScene) {
             case "All Books" ->
@@ -468,7 +470,6 @@ public class SceneGenerator {
     // Getters en Setters
     public DatabaseController getDbController() { return dbController;}
 
-    public void setDbController(DatabaseController dbController) { this.dbController = dbController;}
 
     public BookListManager getBookListManager() {
         return bookListManager;

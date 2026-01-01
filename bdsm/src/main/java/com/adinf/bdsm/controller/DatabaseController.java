@@ -209,11 +209,11 @@ public class DatabaseController {
                 Integer coverLocationId = rs.getInt("cover_location_id");
                 Boolean favourite = rs.getBoolean("favourite");
                 Integer pageNumber = rs.getInt("page_number");
-                String location = rs.getString("location");
+                String location = rs.getString("book_location_id");
                 Integer fileTypeId = rs.getInt("file_type_id");
                 Integer narratorId = rs.getInt("narrator_id");
                 Integer coverTypeId = rs.getInt("cover_type_id");
-                String specialFeature = rs.getString("book_special_feature");
+                String specialFeature = rs.getString("special_feature");
 
                 // Om een boek object te maken heb je natuurlijk niks aan id waardes, maar wel de waarde die het id representeert
                 // Daarom worden de id's in een array hier onder opgeslagen om later te gebruiken bij het halen van de relevante waardes.
