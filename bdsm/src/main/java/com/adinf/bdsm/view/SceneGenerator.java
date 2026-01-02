@@ -23,6 +23,8 @@ public class SceneGenerator {
     private final String[] pageName = {"Create New Book", "All Books", "Favourite Books", "Currently Reading Books","Started Reading Books", "Unread Books", "Read Books" };
     private DatabaseController dbController;
     private String newScene;
+    private TableView<Book> bookTableView;
+
 
     public SceneGenerator(Stage stage) {
         this.sceneChanger = new SceneChanger(stage);
@@ -44,8 +46,8 @@ public class SceneGenerator {
         getBookListManager().addBook(Book.BookType.PHYSICAL_BOOK, Book.BookStatus.STARTED_READING, "Holla @ Me", "1234567890125", "Mozart", "C:\\Users\\User_2\\Desktop", true, 40, "C:\\Users\\User_2\\Desktop", null, null, PhysicalBook.CoverType.HARDCOVER, null );
     }
 
-    public void deleteBook(){
-        getBookListManager().deleteBookInDatabase("1234567890123");
+    public void deleteBook(String isbnNumber){
+        getBookListManager().deleteBookInDatabase(isbnNumber);
     }
 
     public Scene generateScene(String newScene){
@@ -78,7 +80,7 @@ public class SceneGenerator {
         left.setStyle("-fx-background-color: lightcoral;");
         StackPane center = new StackPane();
         center.setStyle("-fx-background-color: lightgreen;");
-        Region right = new Region();
+        StackPane right = new StackPane();
         right.setStyle("-fx-background-color: lightgoldenrodyellow;");
 
         HBox.setHgrow(left, Priority.ALWAYS);
@@ -97,6 +99,8 @@ public class SceneGenerator {
         else {
             center.getChildren().add(generateBookList(getNewScene()));
         }
+
+        right.getChildren().add(createDeleteButton());
 
         bottomHBox.getChildren().addAll(left, center, right);
 
@@ -118,9 +122,13 @@ public class SceneGenerator {
     }
 
 
-    public TableView generateBookList(String newScene){
+    public TableView<Book> getBookTableView() {
+        return bookTableView;
+    }
 
-        TableView<Book> bookList = new TableView<>();
+    public TableView<Book> generateBookList(String newScene){
+
+        bookTableView = new TableView<>();
 
         TableColumn<Book, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -131,7 +139,7 @@ public class SceneGenerator {
         TableColumn<Book, String> bookTypeColumn = new TableColumn<>("Boek Type");
         bookTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBookType().toString()));
 
-        bookList.getColumns().addAll(titleColumn, isbnColumn, bookTypeColumn);
+        bookTableView.getColumns().addAll(titleColumn, isbnColumn, bookTypeColumn);
 
         getBookListManager().setAllBooksList(getDbController().retrieveBooks());
 
@@ -154,8 +162,8 @@ public class SceneGenerator {
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> false); // Show nothing if no match
         };
 
-        bookList.setItems(filteredBooks);
-        return bookList;
+        bookTableView.setItems(filteredBooks);
+        return bookTableView;
     }
 
     public GridPane createBookPane(){
@@ -458,6 +466,37 @@ public class SceneGenerator {
 
         return gridPane;
     }
+
+    private Button createDeleteButton() {
+        Button deleteButton = new Button("Delete selected book");
+        deleteButton.setPrefWidth(180);
+        deleteButton.setDisable(true); // disabled by default
+
+        deleteButton.setStyle("""
+        -fx-font-size: 13px;
+        -fx-font-weight: bold;
+        -fx-background-radius: 8;
+        -fx-background-color: #E53935;
+        -fx-text-fill: white;
+    """);
+
+        // Bind button to selection in the TableView
+        deleteButton.disableProperty().bind(
+                getBookTableView().getSelectionModel().selectedItemProperty().isNull()
+        );
+
+        // Action — you can fill in the deletion logic
+        deleteButton.setOnAction(event -> {
+            Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                getBookListManager().getAllBooksList().remove(selectedBook);
+                deleteBook(selectedBook.getIsbnNumber());
+            }
+        });
+
+        return deleteButton;
+    }
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
