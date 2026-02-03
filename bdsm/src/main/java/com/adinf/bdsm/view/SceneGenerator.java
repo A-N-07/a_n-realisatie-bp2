@@ -233,7 +233,7 @@ public class SceneGenerator {
         Button submitButton = new Button("Submit");
 
         submitButton.setOnAction(e -> {
-            if (titleField.getText().isEmpty() || isbnField.getText().isEmpty() || locationField.getText().isEmpty() || authorField.getText().isEmpty()) {
+            if (titleField.getText().isEmpty() || isbnField.getText().isEmpty() || bookTypeField.getValue() == null || bookStatusField.getValue() == null || locationField.getText().isEmpty()) {
                 showAlert("Formulier Error", "De eerste vijf velden moeten allemaal ingevuld zijn om een boek aan te maken");
                 //Ik moet nog zorgen dat het aangeeft welke velden er allemaal niet ingevuld zijn
             }
