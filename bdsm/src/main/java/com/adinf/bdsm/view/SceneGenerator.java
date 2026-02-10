@@ -76,7 +76,7 @@ public class SceneGenerator {
         HBox bottomHBox = new HBox(10);
         bottomHBox.setStyle("-fx-background-color: lightgray;");
 
-        Region left = new Region();
+        StackPane left = new StackPane();
         left.setStyle("-fx-background-color: lightcoral;");
         StackPane center = new StackPane();
         center.setStyle("-fx-background-color: lightgreen;");
@@ -98,6 +98,7 @@ public class SceneGenerator {
         }
         else {
             center.getChildren().add(generateBookList(getNewScene()));
+            left.getChildren().add(EditBookPane());
         }
 
         right.getChildren().add(createDeleteButton());
@@ -235,7 +236,6 @@ public class SceneGenerator {
         submitButton.setOnAction(e -> {
             if (titleField.getText().isEmpty() || isbnField.getText().isEmpty() || bookTypeField.getValue() == null || bookStatusField.getValue() == null || locationField.getText().isEmpty()) {
                 showAlert("Formulier Error", "De eerste vijf velden moeten allemaal ingevuld zijn om een boek aan te maken");
-                //Ik moet nog zorgen dat het aangeeft welke velden er allemaal niet ingevuld zijn
             }
             else if (bookTypeField.getValue() == null || bookStatusField.getValue() == null) {
                 showAlert("Formulier Error", "Het boektype of boekstatus is nog niet ingevuld. Deze twee moeten allebei ingevuld zijn om een boek aant te maken");
@@ -367,60 +367,103 @@ public class SceneGenerator {
         TextField coverLocationField = new TextField();
 
         Label coverTypeLabel= new Label("Boekenkaft Type");
-        TextField coverTypeField = new TextField();
+        ComboBox<PhysicalBook.CoverType> coverTypeField = new ComboBox<>();
+        coverTypeField.getItems().addAll(PhysicalBook.CoverType.values());
+        coverTypeField.setPromptText("Selecteer uw kafttype!");
 
         Label narratorLabel = new Label("Verteller");
         TextField narratorField = new TextField();
 
         Label fileTypeLabel = new Label("Bestandstype");
-        TextField fileTypeField = new TextField();
+        ComboBox<Book.FileType> fileTypeField = new ComboBox<>();
+        fileTypeField.getItems().addAll(Book.FileType.values());
 
         Label specialFeatureLabel= new Label("Speciale Toevoeging");
         TextField specialFeatureField = new TextField();
 
         Button submitButton = new Button("Submit Changes");
 
+        submitButton.disableProperty().bind(
+                getBookTableView().getSelectionModel().selectedItemProperty().isNull()
+        );
+
         submitButton.setOnAction(e -> {
-            for (Book book : getBookListManager().getAllBooksList()) {
-                if (book.getIsbnNumber().equals(isbnField.getText())) {
-                    // Found the book to edit
-                    // Update the book's properties based on the form fields
-                    if (!titleField.getText().isEmpty()) {
-                        book.setTitle(titleField.getText());
-                    }
+            Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
+            if (selectedBook != null) {
+                if (!isbnField.getText().isEmpty()) {
+                    selectedBook.setIsbnNumber(isbnField.getText());
 
-                    // Update other fields as necessary
-
-                    showAlert("Success", "Boek succesvol bijgewerkt!");
-                    for (Node node : gridPane.getChildren()) {
-                        if (node instanceof TextField) {
-                            TextField tf = (TextField) node;
-                            tf.setText("");
-                        }
-                    }
-                    return;
                 }
+                if (!titleField.getText().isEmpty()) {
+                    selectedBook.setTitle(titleField.getText());
+                }
+                if (bookTypeField.getValue() != null) {
+                    showAlert("Input error", "It is not possible to change BookType");
+                }
+                if (bookStatusField.getValue() != null) {
+                    selectedBook.setBookStatus(bookStatusField.getValue());
+                }
+                if (!locationField.getText().isEmpty()) {
+                    selectedBook.setLocation(locationField.getText());
+                }
+                if (!authorField.getText().isEmpty()) {
+                    selectedBook.setAuthor(authorField.getText());
+                }
+                if (yesButton.isSelected()) {
+                    selectedBook.setFavourite(true);
+                } else if (noButton.isSelected()) {
+                    selectedBook.setFavourite(false);
+                }
+                if (!pageNumberField.getText().isEmpty()) {
+                    try {
+                        selectedBook.setPageNumber(Integer.parseInt(pageNumberField.getText()));
+                    } catch (NumberFormatException ex) {
+                        // Handle invalid number
+                    }
+                }
+
+                if(selectedBook instanceof Ebook) {
+                    Ebook ebook = (Ebook) selectedBook;
+                    if (fileTypeField.getValue() != null) {
+                        ebook.setFileType(fileTypeField.getValue());
+                    }
+                }
+
+                // Check book type and cast to appropriate subclass
+                if (selectedBook instanceof PhysicalBook) {
+                    PhysicalBook physicalBook = (PhysicalBook) selectedBook;
+
+                    if (!coverLocationField.getText().isEmpty()) {
+                        physicalBook.setCoverLocation(coverLocationField.getText());
+                    }
+                    if (coverTypeField.getValue() != null) {
+                        physicalBook.setCoverType(coverTypeField.getValue());
+                    }
+                    getDbController().updateBook(selectedBook.getBookType(),selectedBook.getBookStatus(),selectedBook.getTitle(),selectedBook.getIsbnNumber(),selectedBook.getAuthor(),selectedBook.getCoverLocation(),selectedBook.getFavourite(),selectedBook.getPageNumber(),selectedBook.getLocation(),null,null,physicalBook.getCoverType(),null);;
+                }
+
+                if (selectedBook instanceof AudioBook) {
+                    AudioBook audioBook = (AudioBook) selectedBook;
+                    if (!narratorField.getText().isEmpty()) {
+                        audioBook.setNarrator(narratorField.getText());
+                    }
+                    if (fileTypeField.getValue() != null) {
+                        audioBook.setFileType(fileTypeField.getValue());
+                    }
+                    getDbController().updateBook(selectedBook.getBookType(),selectedBook.getBookStatus(),selectedBook.getTitle(),selectedBook.getIsbnNumber(),selectedBook.getAuthor(),selectedBook.getCoverLocation(),selectedBook.getFavourite(),selectedBook.getPageNumber(),selectedBook.getLocation(),audioBook.getFileType(),audioBook.getNarrator(),null,null);;
+                }
+
+                if (selectedBook instanceof LuxuryEditionBook) {
+                    LuxuryEditionBook luxuryBook = (LuxuryEditionBook) selectedBook;
+                    if (!specialFeatureField.getText().isEmpty()) {
+                        luxuryBook.setSpecialFeature(specialFeatureField.getText());
+                    }
+                    getDbController().updateBook(selectedBook.getBookType(),selectedBook.getBookStatus(),selectedBook.getTitle(),selectedBook.getIsbnNumber(),selectedBook.getAuthor(),selectedBook.getCoverLocation(),selectedBook.getFavourite(),selectedBook.getPageNumber(),selectedBook.getLocation(),null,null,null,luxuryBook.getSpecialFeature());;
+                }
+
+
             }
 
-
-
-
-            //            if (titleField.getText().isEmpty() || isbnField.getText().isEmpty() || locationField.getText().isEmpty() || authorField.getText().isEmpty()) {
-//                showAlert("Formulier Error", "De eerste vijf velden moeten allemaal ingevuld zijn om een boek aan te maken");
-//                //Ik moet nog zorgen dat het aangeeft welke velden er allemaal niet ingevuld zijn
-//            }
-//            if (bookTypeField.getValue() == null || bookStatusField.getValue() == null) {
-//                showAlert("Formulier Error", "Het boektype of boekstatus is nog niet ingevuld. Deze twee moeten allebei ingevuld zijn om een boek aant te maken");
-//            }
-//            if (!isbnField.getText().matches("\\d+") || isbnField.getText().length() != 13 ) {
-//                showAlert("Formulier Error", "Het Isbn-nummer moet alleen nummers bevatten en precies 13 nummers lang zijn. ");
-//            }
-//            if (!pageNumberField.getText().matches("\\d+")) {
-//                showAlert("Formulier Error", "Het paginanummer moet een positief getal zijn tussen de 0 en 9.999.999.");
-//            }
-//            else {
-//                showAlert("Success", "Boek succesvol aangemaakt!");
-//            }
         });
 
         gridPane.add(isbnLabel, 0, 0);
@@ -489,7 +532,7 @@ public class SceneGenerator {
         deleteButton.setOnAction(event -> {
             Book selectedBook = bookTableView.getSelectionModel().getSelectedItem();
             if (selectedBook != null) {
-                getBookListManager().getAllBooksList().remove(selectedBook);
+                getBookListManager().deleteBook(selectedBook.getIsbnNumber());
                 deleteBook(selectedBook.getIsbnNumber());
             }
         });
