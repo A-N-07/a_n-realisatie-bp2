@@ -20,7 +20,7 @@ public class SceneGenerator {
 
     private BookListManager bookListManager;
     private SceneChanger sceneChanger;
-    private final String[] pageName = {"Create New Book", "All Books", "Favourite Books", "Currently Reading Books","Started Reading Books", "Unread Books", "Read Books" };
+    private final String[] pageName = {"Creëer Nieuw Boek", "Alle Boeken", "Favoriete Boeken", "Aan Het Lezen Boeken","Begonnen Met Lezen Boeken", "Ongelezen Boeken", "Gelezen Boeken" };
     private DatabaseController dbController;
     private String newScene;
     private TableView<Book> bookTableView;
@@ -93,7 +93,7 @@ public class SceneGenerator {
         center.prefWidthProperty().bind(bottomHBox.widthProperty().divide(2));
         right.prefWidthProperty().bind(bottomHBox.widthProperty().divide(4));
 
-        if (newScene.equals("Create New Book")) {
+        if (newScene.equals("Creëer Nieuw Boek")) {
             center.getChildren().add(createBookPane());
         }
         else {
@@ -146,18 +146,18 @@ public class SceneGenerator {
 
         new FilteredList<>(getBookListManager().getAllBooksList(), book -> false);
         FilteredList<Book> filteredBooks = switch (newScene) {
-            case "All Books" ->
+            case "Alle Boeken" ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> true);
-            case "Favourite Books" ->
+            case "Favoriete Boeken" ->
                     //filteredBooks = new FilteredList<>(getBookListManager().getAllBooksList(), book -> book.getFavourite() == true);
                     new FilteredList<>(getBookListManager().getAllBooksList(), Book::getFavourite);
-            case "Currently Reading Books" ->
+            case "Aan Het Lezen Boeken" ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> book.getBookStatus().equals(Book.BookStatus.READING));
-            case "Started Reading Books" ->
+            case "Begonnen Met Lezen Boeken" ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> book.getBookStatus().equals(Book.BookStatus.STARTED_READING));
-            case "Unread Books" ->
+            case "Ongelezen Boeken" ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> book.getBookStatus().equals(Book.BookStatus.UNREAD));
-            case "Read Books" ->
+            case "Gelezen Boeken" ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> book.getBookStatus().equals(Book.BookStatus.READ));
             default ->
                     new FilteredList<>(getBookListManager().getAllBooksList(), book -> false); // Show nothing if no match
@@ -511,7 +511,7 @@ public class SceneGenerator {
     }
 
     private Button createDeleteButton() {
-        Button deleteButton = new Button("Delete selected book");
+        Button deleteButton = new Button("Delete geselecteerde boek");
         deleteButton.setPrefWidth(180);
         deleteButton.setDisable(true); // disabled by default
 
