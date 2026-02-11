@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.adinf</groupId>
-  <artifactId>bdsm</artifactId>
+  <artifactId>BookDigitalSystemManager</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>bdsm</name>
 
