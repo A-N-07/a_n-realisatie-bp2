@@ -38,4 +38,5 @@
 
 5. Druk op de database die je hebt aangemaakt en klik op import, upload het bestand bdsm_db.sql
 
-6. Zorg dat je deze repo gecloned hebt dat de {Intellij IDE](https://www.jetbrains.com/idea/download/?section=windows) gedownload hebt -> open de Ide en druk op het groene play button in de bovenbalk van de IDE
+6. Zorg dat je deze repo gecloned hebt dat de [Intellij IDE](https://www.jetbrains.com/idea/download/?section=windows) gedownload hebt -> open de Ide en druk op het groene play button in de bovenbalk van de IDE
+
