@@ -40,3 +40,43 @@
 
 6. Zorg dat je deze repo gecloned hebt dat de [Intellij IDE](https://www.jetbrains.com/idea/download/?section=windows) gedownload hebt -> open de Ide en druk op het groene play button in de bovenbalk van de IDE
 
+## Projectstatus
+
+De applicatie bevindt zich momenteel in actieve ontwikkeling en wordt lokaal gebruikt door de developer voor testing en verdere uitbreiding. Het doel is om de applicatie gereed te maken voor een productieomgeving waarin eindgebruikers het systeem zelfstandig kunnen downloaden en gebruiken.
+
+Om deze eerste release mogelijk te maken, worden de volgende verbeteringen nog geïmplementeerd:
+
+* Edit-functionaliteit voor bestaande boeken
+* Verbeterde responsiveness binnen de applicatie
+* Een levendig en gebruiksvriendelijk UI-design
+* Statistieken over de digitale boekencollectie
+* Een knop om boeken direct te openen
+* Een knop om de bestandslocatie in de file explorer te openen
+
+Na implementatie van deze onderdelen zal de applicatie klaar zijn voor de eerste publieke release.
+
+---
+
+## Implementatieplan en Tijdlijn
+
+De ontwikkeling van het systeem is gestart in januari 2025. Sindsdien is de applicatie stapsgewijs uitgebreid.
+
+**Belangrijke mijlpalen:**
+
+* **Januari 2025** — Start project en implementatie van de boekenlijst
+* **December 2025** — Toevoegen van core functionaliteiten
+* **Februari 2026** — Delete-functionaliteit, boekcreatie en bugfixes
+* **Februari 2026** — Uitvoeren van tests
+
+De komende ontwikkelfase richt zich op het afronden van de geplande features zodat het systeem stabiel genoeg is voor productiegebruik.
+
+---
+
+## Communicatie, Evaluatie en Verificatie
+
+Het project is zelfstandig ontwikkeld in opdracht van een opdrachtgever. De communicatie vond plaats via fysieke afspraken waarin de voortgang werd besproken en feedback werd gegeven.
+
+De applicatie wordt continu geëvalueerd door middel van tests en bugfixes. Nieuwe functionaliteiten worden eerst lokaal gevalideerd voordat ze onderdeel worden van de release. Dit proces helpt om de stabiliteit en bruikbaarheid van het systeem te waarborgen.
+
+
+
